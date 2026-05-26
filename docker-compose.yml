@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: neth_erp_db
+    environment:
+      POSTGRES_USER: erp_user
+      POSTGRES_PASSWORD: erp_password_secure
+      POSTGRES_DB: neth_erp_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U erp_user']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - neth-network
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: neth_erp_backend
+    environment:
+      DATABASE_URL: postgresql://erp_user:erp_password_secure@db:5432/neth_erp_db
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      JWT_REFRESH_SECRET: your-super-secret-refresh-key-change-in-production
+      JWT_EXPIRE: 15m
+      JWT_REFRESH_EXPIRE: 7d
+      PORT: 3000
+      NODE_ENV: production
+      CORS_ORIGIN: http://localhost:3001
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+    networks:
+      - neth-network
+    restart: unless-stopped
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: neth_erp_frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000/api
+    ports:
+      - '3001:80'
+    depends_on:
+      - backend
+    networks:
+      - neth-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  neth-network:
+    driver: bridge

@@ -1,0 +1,8 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useAuth } from '@/hooks/useAuth';
+import { Settings as SettingsIcon, Notifications as NotificationsIcon } from '@mui/icons-material';
+export default function Header() {
+    const { user } = useAuth();
+    return (_jsx("header", { className: "bg-white border-b border-gray-200 shadow-sm", children: _jsxs("div", { className: "flex items-center justify-between px-6 py-4", children: [_jsxs("div", { children: [_jsx("h1", { className: "text-2xl font-bold text-gray-900", children: "Dashboard" }), _jsxs("p", { className: "text-sm text-gray-600", children: ["Welcome back, ", user?.firstName, "!"] })] }), _jsxs("div", { className: "flex items-center gap-6", children: [_jsxs("button", { className: "relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors", children: [_jsx(NotificationsIcon, {}), _jsx("span", { className: "absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" })] }), _jsx("button", { className: "p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors", children: _jsx(SettingsIcon, {}) }), _jsxs("div", { className: "flex items-center gap-3", children: [_jsxs("div", { className: "w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold", children: [user?.firstName.charAt(0), user?.lastName.charAt(0)] }), _jsxs("div", { className: "hidden sm:block", children: [_jsxs("p", { className: "font-medium text-gray-900", children: [user?.firstName, " ", user?.lastName] }), _jsx("p", { className: "text-xs text-gray-600", children: user?.role })] })] })] })] }) }));
+}
+//# sourceMappingURL=Header.js.map

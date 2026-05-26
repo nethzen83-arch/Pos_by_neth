@@ -1,0 +1,9 @@
+export declare const formatCurrency: (amount: number, currency?: string) => string;
+export declare const formatDate: (date: string | Date) => string;
+export declare const formatDateTime: (date: string | Date) => string;
+export declare const truncateText: (text: string, length?: number) => string;
+export declare const getInitials: (firstName: string, lastName: string) => string;
+export declare const calculateDiscount: (original: number, discount: number) => number;
+export declare const calculatePercentage: (value: number, total: number) => number;
+export declare const formatNumber: (num: number, decimals?: number) => string;
+//# sourceMappingURL=formatters.d.ts.map
